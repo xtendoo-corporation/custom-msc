@@ -31,52 +31,28 @@
                     <div class="oe_structure"/>
 
                     <!-- Cabecera -->
-                    <div class="row">
-                        <div class="col-7">
-                            <h2>
+                    <div class="row align-items-end mb-4 border-bottom pb-2">
+                        <div class="col-6">
+                            <h3 class="m-0">
                                 <span t-if="not doc.is_closed">Orden de Trabajo</span>
                                 <span t-if="doc.is_closed">Orden de Trabajo Finalizada</span>
                                 <span t-field="doc.name"/>
-                            </h2>
+                            </h3>
                         </div>
-                        <div class="col-5">
-                            <div class="row">
-                                <div class="col-6">
-                                    <strong>Fecha de Creación:</strong>
-                                </div>
-                                <div class="col-6">
-                                    <span t-field="doc.date_created" t-options="{'widget': 'date'}"/>
-                                </div>
-                            </div>
-                            <div class="row" t-if="doc.date_scheduled">
-                                <div class="col-6">
-                                    <strong>Fecha Programada:</strong>
-                                </div>
-                                <div class="col-6">
-                                    <span t-field="doc.date_scheduled"/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <strong>Estado:</strong>
-                                </div>
-                                <div class="col-6">
-                                    <span t-field="doc.stage_id"/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <strong>Prioridad:</strong>
-                                </div>
-                                <div class="col-6">
-                                    <t t-if="doc.priority_level == '0'">Muy Baja</t>
-                                    <t t-if="doc.priority_level == '1'">Baja</t>
-                                    <t t-if="doc.priority_level == '2'">Normal</t>
-                                    <t t-if="doc.priority_level == '3'">Alta</t>
-                                    <t t-if="doc.priority_level == '4'">Muy Alta</t>
-                                    <t t-if="doc.priority_level == '5'">Urgente</t>
-                                </div>
-                            </div>
+                        <div class="col-6 text-end" style="font-size: 0.9em;">
+                            <span class="mr-3" t-if="doc.date_scheduled"><strong>Programada:</strong> <span t-field="doc.date_scheduled" t-options="{'widget': 'date'}"/></span>
+                            <t t-else="">
+                                <span class="mr-3"><strong>Creada:</strong> <span t-field="doc.date_created" t-options="{'widget': 'date'}"/></span>
+                            </t>
+                            <span class="mr-3"><strong>Estado:</strong> <span t-field="doc.stage_id"/></span>
+                            <span><strong>Prioridad:</strong> 
+                                <t t-if="doc.priority_level == '0'">Muy Baja</t>
+                                <t t-if="doc.priority_level == '1'">Baja</t>
+                                <t t-if="doc.priority_level == '2'">Normal</t>
+                                <t t-if="doc.priority_level == '3'">Alta</t>
+                                <t t-if="doc.priority_level == '4'">Muy Alta</t>
+                                <t t-if="doc.priority_level == '5'">Urgente</t>
+                            </span>
                         </div>
                     </div>
 
@@ -108,7 +84,7 @@
                     <!-- Descripción del trabajo -->
                     <div class="row mt16 mb16">
                         <div class="col-12">
-                            <h4>Descripción del Trabajo</h4>
+                            <strong style="font-size: 1.1em; border-bottom: 1px solid #eee; display: inline-block; padding-bottom: 2px; margin-bottom: 8px;">Descripción del Trabajo</strong>
                             <p t-field="doc.description"/>
                         </div>
                     </div>
@@ -140,22 +116,59 @@
                     <!-- Fechas de ejecución -->
                     <div class="row mt16 mb16" t-if="doc.date_start or doc.date_end">
                         <div class="col-12">
-                            <h4>Información de Ejecución</h4>
-                            <div class="row">
-                                <div class="col-4" t-if="doc.date_start">
-                                    <strong>Fecha de Inicio:</strong><br/>
-                                    <span t-field="doc.date_start"/>
-                                </div>
-                                <div class="col-4" t-if="doc.date_end">
-                                    <strong>Fecha de Finalización:</strong><br/>
-                                    <span t-field="doc.date_end"/>
-                                </div>
-                                <div class="col-4" t-if="doc.duration">
-                                    <strong>Duración:</strong><br/>
-                                    <span t-field="doc.duration"/> horas
-                                </div>
+                            <div style="background-color: #f8f9fa; padding: 10px; border-radius: 4px;">
+                                <strong class="mr-3">Información de Ejecución:</strong>
+                                <span class="mr-4" t-if="doc.date_start"><strong>Inicio:</strong> <span t-field="doc.date_start"/></span>
+                                <span class="mr-4" t-if="doc.date_end"><strong>Fin:</strong> <span t-field="doc.date_end"/></span>
                             </div>
                         </div>
+                    </div>
+                    
+                    <!-- Materiales Consumidos -->
+                    <div t-if="doc.material_line_ids" class="mt-4">
+                        <strong style="font-size: 1.1em; border-bottom: 1px solid #eee; display: inline-block; padding-bottom: 2px; margin-bottom: 8px;">Materiales Consumidos</strong>
+                        <table class="table table-sm o_main_table mt-2">
+                            <thead style="display: table-row-group;">
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Descripción</th>
+                                    <th class="text-end">Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.material_line_ids" t-as="line">
+                                    <td><span t-field="line.product_id.name"/></td>
+                                    <td><span t-field="line.name"/></td>
+                                    <td class="text-end">
+                                        <span t-field="line.quantity"/>
+                                        <span t-field="line.uom_id.name" groups="uom.group_uom"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Horas Empleadas -->
+                    <div t-if="doc.timesheet_line_ids" class="mt-4">
+                        <strong style="font-size: 1.1em; border-bottom: 1px solid #eee; display: inline-block; padding-bottom: 2px; margin-bottom: 8px;">Horas Empleadas</strong>
+                        <table class="table table-sm o_main_table mt-2">
+                            <thead style="display: table-row-group;">
+                                <tr>
+                                    <th>Técnico</th>
+                                    <th>Fecha</th>
+                                    <th>Descripción</th>
+                                    <th class="text-end">Duración (Horas)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.timesheet_line_ids" t-as="line">
+                                    <td><span t-field="line.employee_id.name"/></td>
+                                    <td><span t-field="line.date"/></td>
+                                    <td><span t-field="line.name"/></td>
+                                    <td class="text-end"><span t-field="line.duration" t-options="{'widget': 'float_time'}"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <!-- Notas -->
