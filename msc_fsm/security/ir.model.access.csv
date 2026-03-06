@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_msc_fsm_order_user,msc.fsm.order.user,model_msc_fsm_order,group_fsm_user,1,1,1,0
+access_msc_fsm_order_manager,msc.fsm.order.manager,model_msc_fsm_order,group_fsm_manager,1,1,1,1
+access_msc_fsm_stage_user,msc.fsm.stage.user,model_msc_fsm_stage,group_fsm_user,1,0,0,0
+access_msc_fsm_stage_manager,msc.fsm.stage.manager,model_msc_fsm_stage,group_fsm_manager,1,1,1,1
+access_msc_fsm_tag_user,msc.fsm.tag.user,model_msc_fsm_tag,group_fsm_user,1,0,0,0
+access_msc_fsm_tag_manager,msc.fsm.tag.manager,model_msc_fsm_tag,group_fsm_manager,1,1,1,1
+access_msc_fsm_material_user,msc.fsm.material.user,model_msc_fsm_material,group_fsm_user,1,1,1,0
+access_msc_fsm_material_manager,msc.fsm.material.manager,model_msc_fsm_material,group_fsm_manager,1,1,1,1
+access_msc_fsm_timesheet_user,msc.fsm.timesheet.user,model_msc_fsm_timesheet,group_fsm_user,1,1,1,0
+access_msc_fsm_timesheet_manager,msc.fsm.timesheet.manager,model_msc_fsm_timesheet,group_fsm_manager,1,1,1,1
