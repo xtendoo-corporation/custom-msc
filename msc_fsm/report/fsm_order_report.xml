@@ -56,36 +56,34 @@
                         </div>
                     </div>
 
-                    <!-- Información del cliente -->
+                    <!-- Información del cliente y Descripción -->
                     <div class="row mt32 mb32">
-                        <div class="col-4 mb-2">
-                            <strong>Cliente:</strong>
-                            <div t-field="doc.partner_id"
-                                t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
-                        </div>
-                        <div class="col-4 mb-2" t-if="doc.contact_id">
-                            <strong>Contacto:</strong>
-                            <div t-field="doc.contact_id"
-                                t-options='{"widget": "contact", "fields": ["name", "phone", "email"], "no_marker": True, "phone_icons": True}'/>
-                        </div>
-                        <div class="col-4 mb-2" t-if="doc.location_id">
-                            <strong>Ubicación del Servicio:</strong>
-                            <div>
-                                <span t-field="doc.location_id.name"/><br/>
-                                <span t-field="doc.location_id.street" t-if="doc.location_id.street"/>
-                                <span t-field="doc.location_id.street2" t-if="doc.location_id.street2"/><br/>
-                                <span t-field="doc.location_id.zip" t-if="doc.location_id.zip"/>
-                                <span t-field="doc.location_id.city" t-if="doc.location_id.city"/>
-                                <span t-field="doc.location_id.country_id" t-if="doc.location_id.country_id"/>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <strong>Cliente:</strong>
+                                <div t-field="doc.partner_id"
+                                    t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                            </div>
+                            <div class="mb-3" t-if="doc.contact_id">
+                                <strong>Contacto:</strong>
+                                <div t-field="doc.contact_id"
+                                    t-options='{"widget": "contact", "fields": ["name", "phone", "email"], "no_marker": True, "phone_icons": True}'/>
+                            </div>
+                            <div class="mb-3" t-if="doc.location_id">
+                                <strong>Ubicación del Servicio:</strong>
+                                <div>
+                                    <span t-field="doc.location_id.name"/><br/>
+                                    <span t-field="doc.location_id.street" t-if="doc.location_id.street"/>
+                                    <span t-field="doc.location_id.street2" t-if="doc.location_id.street2"/><br/>
+                                    <span t-field="doc.location_id.zip" t-if="doc.location_id.zip"/>
+                                    <span t-field="doc.location_id.city" t-if="doc.location_id.city"/>
+                                    <span t-field="doc.location_id.country_id" t-if="doc.location_id.country_id"/>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Descripción del trabajo -->
-                    <div class="row mt16 mb16">
-                        <div class="col-12">
+                        <div class="col-6">
                             <strong style="font-size: 1.1em; border-bottom: 1px solid #eee; display: inline-block; padding-bottom: 2px; margin-bottom: 8px;">Descripción del Trabajo</strong>
-                            <p t-field="doc.description"/>
+                            <p t-field="doc.description" style="white-space: pre-wrap; word-break: break-word;"/>
                         </div>
                     </div>
 
