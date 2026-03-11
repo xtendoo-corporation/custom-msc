@@ -25,3 +25,4 @@ class MscFsmTimesheet(models.Model):
     date = fields.Date(string="Fecha", required=True, default=fields.Date.context_today)
     name = fields.Char(string="Descripción", required=True)
     duration = fields.Float(string="Horas", required=True, default=0.0)
+

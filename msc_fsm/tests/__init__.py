@@ -5,3 +5,4 @@ from . import test_fsm_order
 from . import test_fsm_stage
 from . import test_fsm_integration
 from . import test_fsm_location
+from . import test_fsm_technician_notification

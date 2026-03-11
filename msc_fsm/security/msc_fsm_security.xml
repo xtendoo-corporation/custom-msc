@@ -13,7 +13,7 @@
             <field name="name">MSC FSM Manager</field>
             <field name="category_id" ref="base.module_category_services" />
             <field name="implied_ids" eval="[(4, ref('group_fsm_user'))]" />
-            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]" />
             <field name="comment">Manager de servicios de campo</field>
         </record>
 
@@ -38,6 +38,28 @@
             <field name="perm_write" eval="True" />
             <field name="perm_create" eval="True" />
             <field name="perm_unlink" eval="True" />
+        </record>
+        <!-- Reglas para que el FSM Usuario vea pedidos desde su orden -->
+        <record id="fsm_sale_order_rule_user" model="ir.rule">
+            <field name="name">Sale Order: FSM Usuario puede ver pedidos vinculados</field>
+            <field name="model_id" ref="sale.model_sale_order" />
+            <field name="domain_force">[('fsm_order_id', '!=', False)]</field>
+            <field name="groups" eval="[(4, ref('group_fsm_user'))]" />
+            <field name="perm_read" eval="True" />
+            <field name="perm_write" eval="False" />
+            <field name="perm_create" eval="False" />
+            <field name="perm_unlink" eval="False" />
+        </record>
+
+        <record id="fsm_sale_order_line_rule_user" model="ir.rule">
+            <field name="name">Sale Order Line: FSM Usuario puede ver lineas vinculadas</field>
+            <field name="model_id" ref="sale.model_sale_order_line" />
+            <field name="domain_force">[('order_id.fsm_order_id', '!=', False)]</field>
+            <field name="groups" eval="[(4, ref('group_fsm_user'))]" />
+            <field name="perm_read" eval="True" />
+            <field name="perm_write" eval="False" />
+            <field name="perm_create" eval="False" />
+            <field name="perm_unlink" eval="False" />
         </record>
 
     </data>

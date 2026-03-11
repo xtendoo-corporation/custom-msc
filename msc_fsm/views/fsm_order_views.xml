@@ -33,7 +33,10 @@
                             type="object" class="btn-primary"
                             invisible="not date_start or date_end or is_closed" />
                         <button name="action_create_sale_order" string="Crear Orden de Venta"
-                            type="object" class="btn-secondary" />
+                            type="object" class="btn-secondary"
+                            invisible="sale_count &gt; 0"
+                            groups="msc_fsm.group_fsm_manager" />
+                      
                         <button name="action_print_order" string="Imprimir"
                             type="object" class="btn-secondary" />
                         <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" />
@@ -55,14 +58,36 @@
 
                         <group>
                             <group name="customer_info" string="Información del Cliente">
-                                <field name="partner_id" required="1" />
-                                <field name="contact_id" domain="[('parent_id', '=', partner_id)]" />
-                                <field name="location_id" domain="[('parent_id', '=', partner_id)]" />
+                                <!-- Manager: editable -->
+                                <field name="partner_id" required="1"
+                                    groups="msc_fsm.group_fsm_manager" />
+                                <field name="contact_id" domain="[('parent_id', '=', partner_id)]"
+                                    groups="msc_fsm.group_fsm_manager" />
+                                <field name="location_id" domain="[('parent_id', '=', partner_id)]"
+                                    groups="msc_fsm.group_fsm_manager" />
+                                <!-- Usuario: solo lectura -->
+                                <field name="partner_id" readonly="1"
+                                    groups="!msc_fsm.group_fsm_manager" />
+                                <field name="contact_id" readonly="1"
+                                    groups="!msc_fsm.group_fsm_manager" />
+                                <field name="location_id" readonly="1"
+                                    groups="!msc_fsm.group_fsm_manager" />
                             </group>
                             <group name="service_info" string="Información del Trabajo">
-                                <field name="person_ids" widget="many2many_tags" />
-                                <field name="priority_level" widget="priority" />
-                                <field name="tag_ids" widget="many2many_tags" />
+                                <!-- Manager: editable -->
+                                <field name="person_ids" widget="many2many_tags"
+                                    groups="msc_fsm.group_fsm_manager" />
+                                <field name="priority_level" widget="priority"
+                                    groups="msc_fsm.group_fsm_manager" />
+                                <field name="tag_ids" widget="many2many_tags"
+                                    groups="msc_fsm.group_fsm_manager" />
+                                <!-- Usuario: solo lectura -->
+                                <field name="person_ids" widget="many2many_tags" readonly="1"
+                                    groups="!msc_fsm.group_fsm_manager" />
+                                <field name="priority_level" widget="priority" readonly="1"
+                                    groups="!msc_fsm.group_fsm_manager" />
+                                <field name="tag_ids" widget="many2many_tags" readonly="1"
+                                    groups="!msc_fsm.group_fsm_manager" />
                             </group>
                         </group>
 
@@ -93,7 +118,8 @@
                             <page string="Partes de Horas" name="timesheets">
                                 <field name="timesheet_line_ids">
                                     <list editable="bottom">
-                                        <field name="employee_id" />
+                                        <field name="employee_id"
+                                            domain="[('id', 'in', parent.person_ids)]" />
                                         <field name="date" />
                                         <field name="name" />
                                         <field name="duration" widget="float_time" />

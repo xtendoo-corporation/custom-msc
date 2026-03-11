@@ -9,3 +9,5 @@ access_msc_fsm_material_user,msc.fsm.material.user,model_msc_fsm_material,group_
 access_msc_fsm_material_manager,msc.fsm.material.manager,model_msc_fsm_material,group_fsm_manager,1,1,1,1
 access_msc_fsm_timesheet_user,msc.fsm.timesheet.user,model_msc_fsm_timesheet,group_fsm_user,1,1,1,0
 access_msc_fsm_timesheet_manager,msc.fsm.timesheet.manager,model_msc_fsm_timesheet,group_fsm_manager,1,1,1,1
+access_sale_order_fsm_user,sale.order.fsm.user,sale.model_sale_order,group_fsm_user,1,0,0,0
+access_sale_order_line_fsm_user,sale.order.line.fsm.user,sale.model_sale_order_line,group_fsm_user,1,0,0,0

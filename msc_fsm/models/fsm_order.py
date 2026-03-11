@@ -101,8 +101,6 @@ class DaruclimeFSMOrder(models.Model):
         help="Duración del trabajo en horas",
     )
 
-
-
     # Técnicos (eliminamos la referencia al equipo inexistente)
     person_ids = fields.Many2many(
         "hr.employee",
@@ -128,8 +126,6 @@ class DaruclimeFSMOrder(models.Model):
     timesheet_line_ids = fields.One2many(
         "msc.fsm.timesheet", "order_id", string="Partes de Horas"
     )
-
-
 
     # Integración con órdenes de venta
     sale_order_ids = fields.One2many(
@@ -162,7 +158,96 @@ class DaruclimeFSMOrder(models.Model):
             # Garantizar etapa por defecto si no viene informada
             if not vals.get("stage_id"):
                 vals["stage_id"] = self._get_default_stage()
-        return super().create(vals_list)
+        records = super().create(vals_list)
+        # Notificar a técnicos asignados en la creación
+        for record in records:
+            if record.person_ids:
+                record._notify_assigned_technicians(record.person_ids)
+        return records
+
+    def write(self, vals):
+        # Capturar técnicos anteriores antes del write
+        if "person_ids" in vals:
+            old_persons = {rec.id: rec.person_ids for rec in self}
+        res = super().write(vals)
+        # Detectar nuevos técnicos y notificarles
+        if "person_ids" in vals:
+            for rec in self:
+                new_persons = rec.person_ids - old_persons.get(
+                    rec.id, self.env["hr.employee"]
+                )
+                if new_persons:
+                    rec._notify_assigned_technicians(new_persons)
+        return res
+
+    def _notify_assigned_technicians(self, employees):
+        """Envía email de notificación a los técnicos recién asignados."""
+        for employee in employees:
+            # Obtener email: del usuario vinculado o del work_email del empleado
+            email = False
+            if employee.user_id and employee.user_id.email:
+                email = employee.user_id.email
+            elif employee.work_email:
+                email = employee.work_email
+            if not email:
+                continue
+
+            priority_map = dict(self._fields["priority_level"].selection)
+            priority_label = priority_map.get(self.priority_level, "")
+            location_text = (
+                self.location_id.contact_address
+                if self.location_id
+                else "No especificada"
+            )
+            body_html = _(
+                '<div style="margin:0;padding:0;font-family:Arial,sans-serif;">'
+                "<p>Hola <strong>%(tech_name)s</strong>,</p>"
+                "<p>Se te ha asignado una nueva orden de trabajo. A continuación los detalles:</p>"
+                '<table border="1" cellpadding="8" style="border-collapse:collapse;width:100%%;margin:10px 0;">'
+                '<tr style="background-color:#f2f2f2;">'
+                '<td style="width:30%%"><strong>Número de Orden:</strong></td>'
+                "<td>%(order_name)s</td></tr>"
+                "<tr><td><strong>Cliente:</strong></td>"
+                "<td>%(partner_name)s</td></tr>"
+                '<tr style="background-color:#f2f2f2;">'
+                "<td><strong>Descripción:</strong></td>"
+                "<td>%(description)s</td></tr>"
+                "<tr><td><strong>Fecha Programada:</strong></td>"
+                "<td>%(date_scheduled)s</td></tr>"
+                '<tr style="background-color:#f2f2f2;">'
+                "<td><strong>Prioridad:</strong></td>"
+                "<td>%(priority)s</td></tr>"
+                "<tr><td><strong>Dirección del Servicio:</strong></td>"
+                "<td>%(location)s</td></tr>"
+                "</table>"
+                "<p>Por favor, revisa la orden y prepárate para el servicio.</p>"
+                "<p>Saludos cordiales,<br/>%(company_name)s</p>"
+                "</div>"
+            ) % {
+                "tech_name": employee.name,
+                "order_name": self.name,
+                "partner_name": self.partner_id.name,
+                "description": self.description or "",
+                "date_scheduled": self.date_scheduled or _("Por definir"),
+                "priority": priority_label,
+                "location": location_text,
+                "company_name": self.company_id.name,
+            }
+
+            email_from = self.company_id.email or self.env.user.email_formatted
+            subject = _("Se te ha asignado la Orden de Trabajo: %s") % self.name
+
+            self.env["mail.mail"].sudo().create(
+                {
+                    "subject": subject,
+                    "body_html": body_html,
+                    "email_from": email_from,
+                    "email_to": email,
+                    "model": self._name,
+                    "res_id": self.id,
+                    "auto_delete": True,
+                }
+            )
 
     def _get_default_stage(self):
         """Obtiene la etapa por defecto de forma robusta y devuelve su id"""
@@ -203,13 +288,11 @@ class DaruclimeFSMOrder(models.Model):
             else:
                 record.duration = 0.0
 
-
-
     @api.depends("sale_order_ids")
     def _compute_sale_count(self):
         """Calcula el número de órdenes de venta relacionadas"""
         for record in self:
-            record.sale_count = len(record.sale_order_ids)
+            record.sale_count = len(record.sudo().sale_order_ids)
 
     def _compute_access_url(self):
         for record in self:
