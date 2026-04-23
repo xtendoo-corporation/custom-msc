@@ -5,16 +5,11 @@
         <!-- Grupos de seguridad -->
         <record id="group_fsm_user" model="res.groups">
             <field name="name">MSC FSM Usuario</field>
-            <field name="category_id" ref="base.module_category_services" />
-            <field name="comment">Usuario básico de servicios de campo</field>
         </record>
 
         <record id="group_fsm_manager" model="res.groups">
             <field name="name">MSC FSM Manager</field>
-            <field name="category_id" ref="base.module_category_services" />
             <field name="implied_ids" eval="[(4, ref('group_fsm_user'))]" />
-            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]" />
-            <field name="comment">Manager de servicios de campo</field>
         </record>
 
         <!-- Reglas de registro -->

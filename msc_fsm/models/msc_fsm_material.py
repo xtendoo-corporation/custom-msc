@@ -20,7 +20,7 @@ class MscFsmMaterial(models.Model):
         "product.product",
         string="Producto",
         required=True,
-        domain="[('type', 'in', ['consu', 'product'])]",
+        domain="[('type', '=', 'consu')]",
     )
     name = fields.Text(string="Descripción", required=True)
     quantity = fields.Float(

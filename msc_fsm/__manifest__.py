@@ -11,7 +11,7 @@ Módulo unificado que consolida toda la funcionalidad de gestión de partes
 de trabajo en una sola aplicación compacta.
     """,
     "category": "Services/Work Orders",
-    "version": "18.0.1.0.0",
+    "version": "19.0.1.0.0",
     "license": "LGPL-3",
     "author": "Xtendoo Software SLU",
     "website": "https://www.xtendoo.es",

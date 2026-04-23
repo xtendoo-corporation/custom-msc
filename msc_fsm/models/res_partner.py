@@ -31,7 +31,7 @@ class ResPartner(models.Model):
             'type': 'ir.actions.act_window',
             'name': f'Órdenes de Trabajo - {self.name}',
             'res_model': 'msc.fsm.order',
-            'view_mode': 'tree,form,kanban',
+            'view_mode': 'list,form,kanban',
             'domain': [('partner_id', '=', self.id)],
             'context': {'default_partner_id': self.id}
         }
