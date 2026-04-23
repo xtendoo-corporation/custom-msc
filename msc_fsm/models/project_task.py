@@ -15,9 +15,14 @@ class ProjectTask(models.Model):
     )
     is_fsm_task = fields.Boolean(
         string='Es Tarea FSM',
-        related='project_id.is_fsm',
+        compute='_compute_is_fsm_task',
         store=True
     )
+
+    @api.depends('project_id.is_fsm')
+    def _compute_is_fsm_task(self):
+        for task in self:
+            task.is_fsm_task = bool(task.project_id and task.project_id.is_fsm)
 
     def action_view_fsm_order(self):
         """Ver la orden FSM relacionada"""
@@ -36,9 +41,4 @@ class ProjectProject(models.Model):
     is_fsm = fields.Boolean(
         string='Proyecto FSM',
         help="Este proyecto se usa para gestión de servicios de campo"
-    )
-    fsm_team_id = fields.Many2one(
-        'msc.fsm.team',
-        string='Equipo FSM',
-        help="Equipo de servicio de campo asignado a este proyecto"
     )

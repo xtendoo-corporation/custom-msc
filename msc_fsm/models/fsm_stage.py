@@ -2,6 +2,7 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0)
 
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 import re
 
 
@@ -135,42 +136,4 @@ class DaruclimeFSMStage(models.Model):
         return super().write(vals)
 
 
-class DaruclimeFSMTag(models.Model):
-    _name = "msc.fsm.tag"
-    _description = "Etiquetas de Servicio"
-    _order = "name"
 
-    name = fields.Char(string="Nombre", required=True, translate=True)
-    description = fields.Text(string="Descripción")
-
-    # Apariencia
-    color = fields.Integer(string="Color", default=0)
-
-    # Configuración
-    active = fields.Boolean(string="Activo", default=True)
-    company_id = fields.Many2one(
-        "res.company", string="Compañía", default=lambda self: self.env.company
-    )
-
-    # Estadísticas
-    order_count = fields.Integer(
-        string="Órdenes con esta Etiqueta", compute="_compute_order_count"
-    )
-
-    @api.depends("name")
-    def _compute_order_count(self):
-        for tag in self:
-            tag.order_count = self.env["msc.fsm.order"].search_count(
-                [("tag_ids", "in", [tag.id])]
-            )
-
-    def action_view_orders(self):
-        """Ver órdenes con esta etiqueta"""
-        return {
-            "type": "ir.actions.act_window",
-            "name": f"Órdenes - {self.name}",
-            "res_model": "msc.fsm.order",
-            "view_mode": "tree,form,kanban",
-            "domain": [("tag_ids", "in", [self.id])],
-            "context": {"default_tag_ids": [(6, 0, [self.id])]},
-        }

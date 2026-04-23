@@ -48,8 +48,3 @@ class DaruclimeFSMTag(models.Model):
             ])
             record.order_count = len(orders)
 
-    def name_get(self):
-        result = []
-        for record in self:
-            result.append((record.id, record.name))
-        return result
