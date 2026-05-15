@@ -36,7 +36,7 @@
                             type="object" class="btn-secondary"
                             invisible="sale_count &gt; 0"
                             groups="msc_fsm.group_fsm_manager" />
-                      
+
                         <button name="action_print_order" string="Imprimir"
                             type="object" class="btn-secondary" />
                         <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" />
@@ -118,8 +118,7 @@
                             <page string="Partes de Horas" name="timesheets">
                                 <field name="timesheet_line_ids">
                                     <list editable="bottom">
-                                        <field name="employee_id"
-                                            domain="[('id', 'in', parent.person_ids)]" />
+                                        <field name="employee_id"/>
                                         <field name="date" />
                                         <field name="name" />
                                         <field name="duration" widget="float_time" />
