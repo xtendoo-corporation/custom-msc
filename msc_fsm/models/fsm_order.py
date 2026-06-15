@@ -384,7 +384,7 @@ class DaruclimeFSMOrder(models.Model):
                         "product_id": mat.product_id.id,
                         "name": mat.name,
                         "product_uom_qty": mat.quantity,
-                        "product_uom": mat.uom_id.id,
+                        # "product_uom": mat.uom_id.id,
                     },
                 )
             )
