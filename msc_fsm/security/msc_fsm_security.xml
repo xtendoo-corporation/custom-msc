@@ -34,6 +34,18 @@
             <field name="perm_create" eval="True" />
             <field name="perm_unlink" eval="True" />
         </record>
+        <!-- Regla multi-compañía: cada usuario solo ve órdenes de su compañía -->
+        <record id="fsm_order_multi_company_rule" model="ir.rule">
+            <field name="name">FSM Order: Multi-compañía</field>
+            <field name="model_id" ref="model_msc_fsm_order" />
+            <field name="global" eval="True" />
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True" />
+            <field name="perm_write" eval="True" />
+            <field name="perm_create" eval="True" />
+            <field name="perm_unlink" eval="True" />
+        </record>
+
         <!-- Reglas para que el FSM Usuario vea pedidos desde su orden -->
         <record id="fsm_sale_order_rule_user" model="ir.rule">
             <field name="name">Sale Order: FSM Usuario puede ver pedidos vinculados</field>
