@@ -204,6 +204,71 @@
             </field>
         </record>
 
+        <!-- Vista de búsqueda para órdenes FSM -->
+        <record id="view_msc_fsm_order_search" model="ir.ui.view">
+            <field name="name">msc.fsm.order.search</field>
+            <field name="model">msc.fsm.order</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Órdenes de Trabajo">
+                    <field name="name" string="Número" />
+                    <field name="partner_id" string="Cliente" />
+                    <field name="location_id" string="Dirección del Servicio" />
+                    <field name="contact_id" string="Contacto" />
+                    <field name="description" string="Descripción" />
+                    <field name="internal_note" string="Notas Internas" />
+                    <field name="customer_note" string="Notas del Cliente" />
+                    <field name="person_ids" string="Técnico" />
+                    <field name="tag_ids" string="Etiqueta" />
+                    <field name="stage_id" string="Etapa" />
+                    <field name="priority_level" string="Prioridad" />
+                    <field name="date_scheduled" string="Fecha Programada" />
+                    <field name="date_created" string="Fecha de Creación" />
+                    <field name="date_start" string="Fecha de Inicio" />
+                    <field name="date_end" string="Fecha de Finalización" />
+                    <field name="company_id" string="Compañía" groups="base.group_multi_company" />
+
+                    <filter string="Abiertas" name="filter_open"
+                        domain="[('is_closed', '=', False)]" />
+                    <filter string="Cerradas" name="filter_closed"
+                        domain="[('is_closed', '=', True)]" />
+                    <separator />
+                    <filter string="Urgente" name="filter_urgent"
+                        domain="[('priority_level', '=', '5')]" />
+                    <separator />
+                    <filter string="Hoy" name="filter_today"
+                        domain="[('date_scheduled', '&gt;=', 'today'), ('date_scheduled', '&lt;', 'today +1d')]" />
+
+                    <group>
+                        <filter string="Etapa" name="group_stage"
+                            context="{'group_by': 'stage_id'}" />
+                        <filter string="Prioridad" name="group_priority"
+                            context="{'group_by': 'priority_level'}" />
+                        <filter string="Cliente" name="group_partner"
+                            context="{'group_by': 'partner_id'}" />
+                        <filter string="Dirección" name="group_location"
+                            context="{'group_by': 'location_id'}" />
+                        <filter string="Técnico" name="group_technician"
+                            context="{'group_by': 'person_ids'}" />
+                        <filter string="Etiqueta" name="group_tag"
+                            context="{'group_by': 'tag_ids'}" />
+                        <filter string="Fecha de Creación" name="group_date_created"
+                            context="{'group_by': 'date_created:day'}" />
+                        <filter string="Fecha Programada" name="group_date_scheduled"
+                            context="{'group_by': 'date_scheduled:day'}" />
+                        <filter string="Fecha de Inicio" name="group_date_start"
+                            context="{'group_by': 'date_start:day'}" />
+                        <filter string="Fecha de Finalización" name="group_date_end"
+                            context="{'group_by': 'date_end:day'}" />
+                        <filter string="Cerrado" name="group_closed"
+                            context="{'group_by': 'is_closed'}" />
+                        <filter string="Compañía" name="group_company"
+                            context="{'group_by': 'company_id'}"
+                            groups="base.group_multi_company" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <!-- Vista calendario para órdenes FSM -->
         <record id="view_msc_fsm_order_calendar" model="ir.ui.view">
             <field name="name">msc.fsm.order.calendar</field>
