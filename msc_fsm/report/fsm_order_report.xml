@@ -2,6 +2,15 @@
 <odoo>
     <data>
 
+        <!-- Heredar informe de venta: mostrar nombre del producto en lugar de descripción -->
+        <template id="report_saleorder_document_inherit_msc_fsm"
+                  inherit_id="sale.report_saleorder_document"
+                  name="MSC FSM - Sale Order Report: show product name">
+            <xpath expr="//td[@name='td_product_name']/span" position="replace">
+                <span t-field="line.product_id.display_name">Product Name</span>
+            </xpath>
+        </template>
+
         <!-- Definición del reporte para Órdenes de Trabajo FSM -->
         <record id="action_report_fsm_order" model="ir.actions.report">
             <field name="name">Orden de Trabajo FSM</field>
