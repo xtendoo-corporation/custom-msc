@@ -10,6 +10,7 @@
                 <list string="Órdenes de Trabajo">
                     <field name="name" />
                     <field name="partner_id" />
+                    <field name="description" />
                     <field name="location_id" />
                     <field name="stage_id" />
                     <field name="priority_level" widget="priority" />
@@ -148,6 +149,7 @@
                     <field name="color" />
                     <field name="priority_level" />
                     <field name="partner_id" />
+                    <field name="description" />
                     <field name="date_scheduled" />
                     <templates>
                         <t t-name="card">
@@ -179,6 +181,9 @@
                                         </div>
                                         <div class="o_kanban_record_body">
                                             <field name="partner_id" />
+                                            <div class="o_kanban_record_description">
+                                                <field name="description" />
+                                            </div>
                                             <t t-if="record.date_scheduled.raw_value">
                                                 <br />
                                                 <i class="fa fa-calendar" title="Fecha programada" />
