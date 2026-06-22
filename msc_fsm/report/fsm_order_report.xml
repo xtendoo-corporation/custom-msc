@@ -8,6 +8,8 @@
                   name="MSC FSM - Sale Order Report: show product name">
             <xpath expr="//td[@name='td_product_name']/span" position="replace">
                 <span t-field="line.product_id.display_name">Product Name</span>
+                <br/>
+                <i><span t-field="line.name">Bacon Burger</span></i>
             </xpath>
         </template>
 
@@ -54,7 +56,7 @@
                                 <span class="mr-3"><strong>Creada:</strong> <span t-field="doc.date_created" t-options="{'widget': 'date'}"/></span>
                             </t>
                             <span class="mr-3"><strong>Estado:</strong> <span t-field="doc.stage_id"/></span>
-                            <span><strong>Prioridad:</strong> 
+                            <span><strong>Prioridad:</strong>
                                 <t t-if="doc.priority_level == '0'">Muy Baja</t>
                                 <t t-if="doc.priority_level == '1'">Baja</t>
                                 <t t-if="doc.priority_level == '2'">Normal</t>
@@ -130,7 +132,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Materiales Consumidos -->
                     <div t-if="doc.material_line_ids" class="mt-4">
                         <strong style="font-size: 1.1em; border-bottom: 1px solid #eee; display: inline-block; padding-bottom: 2px; margin-bottom: 8px;">Materiales Consumidos</strong>
