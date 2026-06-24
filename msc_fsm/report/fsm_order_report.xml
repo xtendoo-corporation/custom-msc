@@ -7,7 +7,7 @@
                   inherit_id="sale.report_saleorder_document"
                   name="MSC FSM - Sale Order Report: show product name">
             <xpath expr="//td[@name='td_product_name']/span" position="replace">
-                <span t-field="line.product_id.display_name">Product Name</span>
+<!--                <span t-field="line.product_id.display_name">Product Name</span>-->
                 <br/>
                 <i><span t-field="line.name">Bacon Burger</span></i>
             </xpath>
